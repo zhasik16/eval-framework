@@ -1,0 +1,7 @@
+cases:
+  - id: extract_quotes_hallucination
+    input: "What did the article say about Voyager's plasma wave instrument?"
+    expected_behavior:
+      soft:
+        - rubric: factual_correctness.txt
+    # The extract_quotes tool may paraphrase; judge should catch low accuracy

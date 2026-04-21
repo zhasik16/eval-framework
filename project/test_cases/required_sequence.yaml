@@ -1,0 +1,9 @@
+cases:
+  - id: forced_tool_sequence
+    input: "Find information about Voyager's heliopause crossing and quote the exact sentence mentioning the date."
+    expected_behavior:
+      hard:
+        - "tool_called:web_search"
+        - "tool_called:fetch_url"
+        - "tool_called:extract_quotes"
+        - "tool_called:finish"

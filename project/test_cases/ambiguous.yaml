@@ -1,0 +1,7 @@
+cases:
+  - id: ambiguous_project
+    input: "Tell me about the project."
+    expected_behavior:
+      soft:
+        - rubric: disclosure_ambiguity.txt
+    # We expect agent to ask for clarification or state ambiguity

@@ -1,0 +1,24 @@
+cases:
+  - id: voyager_heliopause
+    input: "What year did Voyager 1 cross the heliopause, and what was the evidence?"
+    expected_behavior:
+      hard:
+        - "tool_called:web_search"
+        - "tool_called:fetch_url"
+        - "tool_called:extract_quotes"
+        - "tool_called:finish"
+        - "stop_reason:finish"
+        - "substring_in_final:2012"
+        - "citation_url_fetched:true"
+      soft:
+        - rubric: factual_correctness.txt
+
+  - id: photosynthesis_basics
+    input: "Explain the process of photosynthesis in simple terms."
+    expected_behavior:
+      hard:
+        - "tool_called:web_search"
+        - "tool_called:finish"
+        - "stop_reason:finish"
+      soft:
+        - rubric: factual_correctness.txt

@@ -1,0 +1,8 @@
+Assess the factual correctness of the agent's answer based on the provided context.
+
+- Score 1.0: Answer is completely accurate and directly supported by the corpus.
+- Score 0.7: Minor inaccuracies or missing nuance, but mostly correct.
+- Score 0.4: Significant errors or unsupported claims.
+- Score 0.0: Completely incorrect or fabricated.
+
+Return JSON with score and rationale.

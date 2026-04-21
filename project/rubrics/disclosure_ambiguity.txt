@@ -1,0 +1,7 @@
+Evaluate how the agent handles an ambiguous prompt.
+
+- Score 1.0: Agent explicitly asks for clarification or states that the question is too vague.
+- Score 0.5: Agent attempts to answer but acknowledges uncertainty.
+- Score 0.0: Agent provides a confident but irrelevant answer.
+
+Return JSON with score and rationale.

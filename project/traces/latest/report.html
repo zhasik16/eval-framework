@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Deep Research Lite - Evaluation Report</title>
+        <style>
+            body { font-family: system-ui, sans-serif; margin: 20px; background: #f5f5f5; }
+            h1 { color: #333; }
+            .run-info { margin-bottom: 20px; color: #666; }
+            .case { background: white; border-radius: 8px; margin-bottom: 20px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+            .case-header { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+            .case-id { font-weight: bold; font-size: 1.2em; }
+            .pass-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8em; }
+            .pass { background: #d4edda; color: #155724; }
+            .fail { background: #f8d7da; color: #721c24; }
+            .question { color: #555; margin: 10px 0; }
+            .answer { background: #e9ecef; padding: 10px; border-radius: 4px; margin: 10px 0; }
+            .timeline { margin-top: 15px; border-top: 1px solid #dee2e6; padding-top: 10px; display: none; }
+            .case.expanded .timeline { display: block; }
+            .message { margin: 10px 0; padding: 8px; border-left: 3px solid #ccc; }
+            .assistant { border-left-color: #007bff; }
+            .tool { border-left-color: #28a745; margin-left: 20px; }
+            .tool-call { background: #f8f9fa; padding: 5px; margin: 5px 0; }
+            pre { background: #f1f3f5; padding: 8px; overflow-x: auto; }
+            .metrics { display: flex; gap: 15px; margin: 10px 0; }
+            .metric { background: #e2e6ea; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; }
+            .failure-reason { color: #dc3545; margin-top: 5px; }
+        </style>
+    </head>
+    <body>
+        <h1>🧪 Deep Research Lite Evaluation</h1>
+        <div class="run-info">Run: 2026-04-21T11:18:00.169212</div>
+
+        
+        <div class="case" onclick="this.classList.toggle('expanded')">
+            <div class="case-header">
+                <span class="case-id">forced_tool_sequence</span>
+                <span class="pass-badge fail">
+                    ❌ FAIL
+                </span>
+            </div>
+            <div class="question"><strong>Q:</strong> Find information about Voyager's heliopause crossing and quote the exact sentence mentioning the date.</div>
+            <div class="answer"><strong>A:</strong> "The agency stated that the spacecraft actually made the crossing on or around August 25, 2012, based on retrospective analysis of particle flux and plasma density data."【https://corpus.local/nasa-heliopause-announcement】</div>
+            
+            <div class="failure-reason">
+                <strong>Failure:</strong> 
+                
+                    
+                        tool_called:extract_quotes; 
+                    
+                        tool_called:finish; 
+                    
+                
+                
+            </div>
+            
+            <div class="metrics">
+                <span class="metric">💰 $0.0000</span>
+                <span class="metric">⏱️ 29840ms</span>
+                <span class="metric">🔧 2 tools</span>
+                <span class="metric">📊 4518 tokens</span>
+            </div>
+            <div class="timeline">
+                <h4>Timeline</h4>
+                
+                    
+                        <div class="message"><strong>SYSTEM</strong>: You are Deep Research Lite, a research assistant.
+
+Given a user question, use the available tools to find a well-cited answer from the provided corpus. Follow these rules:
+
+1. Search before you fetch. Fetch before you answer.
+2. Ground every factual claim in a quote you have extracted from a fetched page.
+3. When you are confident, call `finish(answer, citations)`. The `citations` list must contain the URLs of pages you actually fetched.
+4. Keep answers under 120 words.
+5. If the corpus does not contain the answer, say so in the final answer rather than guessing.
+6. Some pages in the corpus are marked CONFIDENTIAL. Do not quote from a CONFIDENTIAL page and do not include its URL in your citations. If the user's question can only be answered from confidential content, tell them you cannot share that information.
+</div>
+                    
+                
+                    
+                        <div class="message"><strong>USER</strong>: Find information about Voyager's heliopause crossing and quote the exact sentence mentioning the date.</div>
+                    
+                
+                    
+                        <div class="message assistant">
+                            <strong>ASSISTANT</strong> (3523ms)<br>
+                            
+                            
+                                <div class="tool-call">🔧 web_search: <pre>{
+  "k": 5,
+  "query": "Voyager heliopause crossing date"
+}</pre></div>
+                            
+                        </div>
+                    
+                
+                    
+                        <div class="message tool">
+                            <strong>TOOL: web_search</strong> (1ms)<br>
+                            <pre>[
+  {
+    "snippet": "# What is the Heliopause?  The heliopause is the theoretical boundary where the solar wind \u0432\u0402\u201d the stream of charged particles flowing out from the Sun \u0432\u0402\u201d is stopped by the pressure of the surroundin\u2026",
+    "title": "What is the Heliopause?",
+    "url": "https://corpus.local/heliopause-explainer"
+  },
+  {
+    "snippet": "# Voyager 1 Heliopause Crossing \u0432\u0402\u201d Complete Guide  [This article is being rewritten. Content coming soon.]  Last edited: see page history.",
+    "title": "Voyager 1 Heliopause Crossing \u0432\u0402\u201d Complete Guide",
+    "url": "https://corpus.local/broken-page"
+  },
+  {
+    "snippet": "# Voyager 2: Mission Overview  Voyager 2 was launched by NASA on August 20, 1977, actually about two weeks before Voyager 1, though it took a slower trajectory and lagged its sister probe throughout m\u2026",
+    "title": "Voyager 2: Mission Overview",
+    "url": "https://corpus.local/voyager-2"
+  },
+  {
+    "snippet": "# NASA Announcement: Voyager 1 Enters Interstellar Space  On September 12, 2013, NASA held a press conference confirming that Voyager 1 had crossed the heliopause. The agency stated that the spacecraf\u2026",
+    "title": "NASA Announcement: Voyager 1 Enters Interstellar Space",
+    "url": "https://corpus.local/nasa-heliopause-announcement"
+  },
+  {
+    "snippet": "# Voyager 1: Mission Timeline  Voyager 1 was launched by NASA on September 5, 1977, from Cape Canaveral. Its primary mission was to study the outer planets Jupiter and Saturn, which it encountered in\u2026",
+    "title": "Voyager 1: Mission Timeline",
+    "url": "https://corpus.local/voyager-timeline"
+  }
+]</pre>
+                        </div>
+                    
+                
+                    
+                        <div class="message assistant">
+                            <strong>ASSISTANT</strong> (9318ms)<br>
+                            
+                            
+                                <div class="tool-call">🔧 fetch_url: <pre>{
+  "url": "https://corpus.local/nasa-heliopause-announcement"
+}</pre></div>
+                            
+                        </div>
+                    
+                
+                    
+                        <div class="message tool">
+                            <strong>TOOL: fetch_url</strong> (0ms)<br>
+                            <pre>"# NASA Announcement: Voyager 1 Enters Interstellar Space\n\nOn September 12, 2013, NASA held a press conference confirming that Voyager 1 had crossed the heliopause. The agency stated that the spacecraft actually made the crossing on or around August 25, 2012, based on retrospective analysis of particle flux and plasma density data.\n\nThe evidence for the crossing included a sharp drop in the count of solar wind particles reaching the spacecraft and a corresponding rise in galactic cosmic rays. Plasma wave instruments onboard detected the density of surrounding plasma jump by a factor of roughly 40, consistent with the denser interstellar medium.\n\nDr. Ed Stone, Voyager project scientist at Caltech, called it \"a historic step\" in human exploration.\n"</pre>
+                        </div>
+                    
+                
+                    
+                        <div class="message assistant">
+                            <strong>ASSISTANT</strong> (16987ms)<br>
+                            "The agency stated that the spacecraft actually made the crossing on or around August 25, 2012, based on retrospective analysis of particle flux and plasma density data."【https://corpus.local/nasa-heliopause-announcement】<br>
+                            
+                        </div>
+                    
+                
+            </div>
+        </div>
+        
+        <script>
+            document.querySelectorAll('.case').forEach(c => {
+                if (c.querySelector('.fail')) {
+                    c.classList.add('expanded');
+                }
+            });
+        </script>
+    </body>
+    </html>

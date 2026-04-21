@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Deep Research Lite - Evaluation Report</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 20px;
+        background: #f5f5f5;
+      }
+      h1 {
+        color: #333;
+      }
+      .run-info {
+        margin-bottom: 20px;
+        color: #666;
+      }
+      .case {
+        background: white;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 15px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .case-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+      }
+      .case-id {
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+      .pass-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+      }
+      .pass {
+        background: #d4edda;
+        color: #155724;
+      }
+      .fail {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .question {
+        color: #555;
+        margin: 10px 0;
+      }
+      .answer {
+        background: #e9ecef;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+      .timeline {
+        margin-top: 15px;
+        border-top: 1px solid #dee2e6;
+        padding-top: 10px;
+        display: none;
+      }
+      .case.expanded .timeline {
+        display: block;
+      }
+      .message {
+        margin: 10px 0;
+        padding: 8px;
+        border-left: 3px solid #ccc;
+      }
+      .assistant {
+        border-left-color: #007bff;
+      }
+      .tool {
+        border-left-color: #28a745;
+        margin-left: 20px;
+      }
+      .tool-call {
+        background: #f8f9fa;
+        padding: 5px;
+        margin: 5px 0;
+      }
+      pre {
+        background: #f1f3f5;
+        padding: 8px;
+        overflow-x: auto;
+      }
+      .metrics {
+        display: flex;
+        gap: 15px;
+        margin: 10px 0;
+      }
+      .metric {
+        background: #e2e6ea;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+      .failure-reason {
+        color: #dc3545;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🧪 Deep Research Lite Evaluation</h1>
+    <div class="run-info">Run: {{ run_time }}</div>
+
+    {% for case in cases %}
+    <div class="case" onclick="this.classList.toggle('expanded')">
+      <div class="case-header">
+        <span class="case-id">{{ case.case_id }}</span>
+        <span class="pass-badge {{ 'pass' if case.pass else 'fail' }}">
+          {{ '✅ PASS' if case.pass else '❌ FAIL' }}
+        </span>
+      </div>
+      <div class="question"><strong>Q:</strong> {{ case.input }}</div>
+      <div class="answer">
+        <strong>A:</strong> {{ case.trace.final_answer or '[No answer]' }}
+      </div>
+      {% if not case.pass %}
+      <div class="failure-reason">
+        <strong>Failure:</strong>
+        {% if case.scores.hard %} {% for check, passed in
+        case.scores.hard.items() if not passed %} {{ check }}; {% endfor %} {%
+        endif %} {% if case.scores.soft %} {% for rubric, result in
+        case.scores.soft.items() if result.score < 0.7 %} {{ rubric }}: {{
+        result.rationale }}; {% endfor %} {% endif %}
+      </div>
+      {% endif %}
+      <div class="metrics">
+        <span class="metric">💰 ${{ "%.4f"|format(case.trace.cost_usd) }}</span>
+        <span class="metric">⏱️ {{ case.trace.wall_time_ms }}ms</span>
+        <span class="metric"
+          >🔧 {{
+          case.trace.messages|selectattr('role','equalto','assistant')|map(attribute='tool_calls')|sum|length
+          }} tools</span
+        >
+        <span class="metric"
+          >📊 {{ case.trace.total_tokens.input + case.trace.total_tokens.output
+          }} tokens</span
+        >
+      </div>
+      <div class="timeline">
+        <h4>Timeline</h4>
+        {% for msg in case.trace.messages %} {% if msg.role == 'system' or
+        msg.role == 'user' %}
+        <div class="message">
+          <strong>{{ msg.role|upper }}</strong>: {{ msg.content }}
+        </div>
+        {% elif msg.role == 'assistant' %}
+        <div class="message assistant">
+          <strong>ASSISTANT</strong> ({{ msg.latency_ms }}ms)<br />
+          {% if msg.text %}{{ msg.text }}<br />{% endif %} {% for tc in
+          msg.tool_calls %}
+          <div class="tool-call">
+            🔧 {{ tc.name }}:
+            <pre>{{ tc.args|tojson(indent=2) }}</pre>
+          </div>
+          {% endfor %}
+        </div>
+        {% elif msg.role == 'tool' %}
+        <div class="message tool">
+          <strong>TOOL: {{ msg.name }}</strong> ({{ msg.latency_ms }}ms)<br />
+          <pre>{{ msg.content|tojson(indent=2) }}</pre>
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+    <script>
+      // Expand first failure by default
+      document.querySelectorAll(".case").forEach((c) => {
+        if (c.querySelector(".fail")) {
+          c.classList.add("expanded");
+          return;
+        }
+      });
+    </script>
+  </body>
+</html>
