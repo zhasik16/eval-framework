@@ -266,5 +266,3 @@ This framework provides:
 * Practical debugging insights
 
 It is designed to simulate real-world evaluation pipelines while remaining lightweight and cost-efficient.
-
-```
